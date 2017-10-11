@@ -12,9 +12,9 @@ The code is written in Python 3, running requires installations of Python, Make,
 # 3. Quick start
 
 Run:
-	* `make fig4`	to generate Figure 4 (this will run the code to generate the data for Figure 5, store the data in the ./fig folder, and generate the file ./tex/fig4.pdf containing the figure.)
-	* `make fig5`	to generate Figure 5
-	* `make fig6`	to generate Figure 6
+* `make fig4`	to generate Figure 4 (this will run the code to generate the data for Figure 5, store the data in the ./fig folder, and generate the file ./tex/fig4.pdf containing the figure.)
+* `make fig5`	to generate Figure 5
+* `make fig6`	to generate Figure 6
 
 # 4. Licence
 

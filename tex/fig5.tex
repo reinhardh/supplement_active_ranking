@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+
+\input{preamble.tex}
+
+\usetikzlibrary{pgfplots.groupplots}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}
+\usepackage{pgfplots,pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.10}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}
+
+
+
+\begin{document}
+
+
+\begin{figure}[h!]
+\begin{center}
+%\pgfplotsset{yticklabel style={
+%        /pgf/number format/fixed,
+%        /pgf/number format/precision=1
+%},
+%scaled y ticks=false}
+\begin{tikzpicture}[scale=1.2]
+\begin{groupplot}[
+         title style={at={(0.5,-0.25)},anchor=north}, group
+         style={group size=2 by 1, horizontal sep=1.5cm },
+         width=0.45\textwidth, xticklabel style={/pgf/number
+           format/fixed, /pgf/number format/precision=3}, yticklabel
+         style={/pgf/number format/fixed, /pgf/number format/precision=2 }, %ymode=log, 
+           ] % left panel 
+
+
+\nextgroupplot[xlabel = {$n$}, ylabel = {sample complexity},title={(a)},legend style={at={(0.4,0.9)}}]
+\addplot [no markers,blue,very thick] table [x index=0,y index=3] {../fig/comparison_varyn09.dat};     
+\addlegendentry{AR}
+
+\addplot [no markers,red,densely dotted,very thick] table [x index=0,y index=4] {../fig/comparison_varyn09.dat};     
+\addlegendentry{PLPAC}
+
+\addplot [brown,dashed,very thick] table [x index=0,y index=5] {../fig/comparison_varyn09.dat};     
+\addlegendentry{BTMB}
+
+
+%%%
+
+%\nextgroupplot[xlabel = {$\pmatmax$},%ymax=300000,
+%  %ylabel = {sample complexity},
+%  title={(b)},ymode=log,
+%  legend style={at={(1,1)}},
+%  ]
+%      \errorband{./fig/comparison_vary_closeness_linsep_rev2.dat}{1}{3}{4}{brown}{0.2}{dashed}
+%      \addlegendentry{PBR} %
+%\errorband{./fig/comparison_vary_closeness_linsep_rev.dat}{1}{6}{7}{red}{0.2}{densely dotted}
+%   \addlegendentry{SAVAGE} %   
+%  \errorband{./fig/comparison_vary_closeness_linsep_rev.dat}{1}{3}{4}{blue}{0.2}{solid}
+%\addlegendentry{AR} %
+
+%%%
+
+
+\end{groupplot}     
+\end{tikzpicture}
+\end{center}
+%\caption{\label{fig:varyn}
+%(a) 
+%Empirical sample complexity of the AR, PLPAC, and BTMB algorithms applied to the BTL model $\pmat^{(\xi)}$ with parameters $\parw_i = \xi (\numitems-i),
+%  i=1,\ldots,10$ chosen such that $\pmatmax = 0.9$. 
+%  Even in this regime where the PLPAC algorithm has a lower sample complexity than the AR algorithm, the difference is minor (30\% improvement at the most).
+%(b) 
+%Empirical sample complexity 
+%of the PBR, SAVAGE, and AR algorithms 
+%%of the PBR,  AR, PLPAC, and BTMB algorithms 
+%applied to the BTL model $\pmat^{(\eta)}$ with parameters $\parw_i = \log(\eta + \numitems -
+%  i), i = 1,\ldots,10$, as a function of $\pmatmax \defeq \max_{i,j} \pmat_{ij}$. We varied $\eta$ such
+%  that $\pmatmax \in [0.65,0.99]$. The error bars correspond to one
+%  standard deviation from the mean. 
+%}
+\end{figure}
+
+
+\end{document}

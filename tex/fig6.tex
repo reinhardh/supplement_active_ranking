@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+
+\input{preamble.tex}
+
+\usetikzlibrary{pgfplots.groupplots}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}
+\usepackage{pgfplots,pgfplotstable}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.10}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}
+
+\newcommand{\errorband}[6]{ \pgfplotstableread{#1}\datatable \addplot
+  [name path=pluserror,draw=none,no markers,forget plot] table
+  [x={#2},y expr=\thisrow{#3}+\thisrow{#4}] {\datatable};
+
+  \addplot [name path=minuserror,draw=none,no markers,forget plot]
+    table [x={#2},y expr=\thisrow{#3}-\thisrow{#4}] {\datatable};
+
+  \addplot [forget plot,fill=#5,opacity=#6]
+    fill between[on layer={},of=pluserror and minuserror];
+
+  \addplot [#5,thick,no markers]
+    table [x={#2},y={#3}] {\datatable};
+}
+
+\begin{document}
+
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\begin{groupplot}[
+         title style={at={(0.5,-0.3)},anchor=north}, group
+         style={group size=2 by 1, horizontal sep=2cm },
+         width=0.5\textwidth, xticklabel style={/pgf/number
+           format/fixed, /pgf/number format/precision=3}, yticklabel
+         style={/pgf/number format/fixed, /pgf/number
+           format/precision=5}, ymin = 0] % left panel
+  \nextgroupplot[xlabel = {$\lambda$},ylabel = {relative sample
+      complexity},title={(a)}]
+  \errorband{../fig/generalization_n10.dat}{0}{3}{4}{blue}{0.2}
+  \addlegendentry{AR} %
+  \errorband{../fig/generalization_n10.dat}{0}{5}{6}{red}{0.2}
+  \addlegendentry{PLPAC} %
+  \errorband{../fig/generalization_n10.dat}{0}{7}{8}{brown}{0.2}
+  \addlegendentry{BTMB}
+        
+	% right panel 
+\nextgroupplot[xlabel = {$\lambda$},ylabel =
+  {failure probability},title={(b)}] \addplot +[mark=x] table[x
+      index=0,y index=9]{../fig/generalization_n10.dat};
+    \addlegendentry{AR} % 
+\addplot +[mark=x] table[x index=0,y
+    index=10]{../fig/generalization_n10.dat}; \addlegendentry{PLPAC} %
+      \addplot +[mark=x] table[x index=0,y
+        index=11]{../fig/generalization_n10.dat}; \addlegendentry{BTMB}
+	 
+\end{groupplot}          
+\end{tikzpicture}
+\end{center}
+%
+\caption{
+%\label{fig:violationBTL} (a) Relative sample complexity
+%  defined as the number of comparisons until termination, $\numcmp$,
+%  divided by the complexity parameter $\complexityP(\score(\Pmat))$,
+%  and (b) failure probability on a BTL model $\pmat$ with
+%  $\numitems=10$ and with a fraction of $\lambda$ of the off-diagonals
+%  of $\pmat$ substituted by a random pairwise comparison probability.
+%  The model transitions from a BTL model to a random pairwise
+%  comparison matrix in $\lambda$; the closer $\lambda$ to zero the
+%  closer $\pmat$ to the original BTL model.  The results show that,
+%  while the AR algorithm yields an $\delta$-accurate ranking after
+%  $O(\complexityP(\score(\Pmat)))$ comparisons, irrespectively of
+%  $\lambda$, the sample complexity and more importantly the failure
+%  probability of the PLPAC and BTMB algorithms become very large in
+%  $\lambda$. 
+   }
+\end{figure}
+
+
+\end{document}

@@ -4,6 +4,9 @@ This folder contains the code to reproduce the numerical results (Figures 4, 5, 
 
 **``Active Ranking from Pairwise Comparisons and When Parametric Assumptions Don't Help''**, by Reinhard Heckel, Nihar B. Shah, Kannan Ramchandran, and Martin J. Wainwright
 
+An introduction and exposition of the algorithm is given in the jupyter notebook:
+
+active_ranking_introduction.ipynb 
 
 # 2. Requirements
 

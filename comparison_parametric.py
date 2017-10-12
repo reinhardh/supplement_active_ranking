@@ -9,14 +9,14 @@ import scipy.optimize as optimization
 from itertools import permutations
 
 from pairwise import pairwise
-from ranking_algorithms import topkalg, PLPAC, BTM
+from ranking_algorithms import topkalg, PLPAC, BTM, ARalg
 
 # Python 2 and 3:
 #from __future__ import print_function    # (at top of module)
 
 ##### Test PLPAC, BTMB, and AR algorithms
 
-def test_PLA():
+def test_algorithms():
 	n = 10
 	delta = 0.1
 	pmodel = pairwise(n)
@@ -27,16 +27,19 @@ def test_PLA():
 	print("largest entry: ", amax(pmodel.P) )
 	print("model complexity: ", pmodel.top1H() )
 
+
+	kset = [1,n]
+	ar = ARalg(pmodel,kset)
+	ar.rank(0.1)
+	print('AR, # Comparisons:', ar.pairwise.ctr ) 
+	print('..succeeded' if ar.evaluate_perfect_recovery() else '..failed' )
+
 	plpac = PLPAC(pmodel)
 	plpac.rank(delta)
 	print( 'PLPAC, # Comparisons:', plpac.pairwise.ctr )
 	print( '..succeeded' if plpac.evaluate_perfect_recovery() else '..failed' )
 
-	#kset = [1,n]
-	#ar = ARalg(pmodel,kset)
-	#ar.rank(0.1)
-	#print('AR, # Comparisons:', ar.pairwise.ctr ) 
-	#print('..succeeded' if ar.evaluate_perfect_recovery() else '..failed' )
+
 
 	alg = topkalg(pmodel,1)
 	alg.rank()

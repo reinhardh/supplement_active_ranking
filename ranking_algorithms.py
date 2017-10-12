@@ -3,7 +3,13 @@ from numpy import *
 from itertools import permutations
 
 '''
-Top k ranking algorithm: this is the active ranking algorithm tailored to top-k identification
+Top k ranking algorithm: the active ranking algorithm tailored to top-k identification
+Input:
+- pairwise: A class abstracting a pairwise comparison model (see pairwise.py). 
+The algorithm interacts with the model through asking for a comparison between 
+item i and j by calling pairwise.compare(i,j)
+- k: The number of top items to identify
+- rule: different choices for confidence intervals, the default one is the one from the paper
 '''
 class topkalg:
 	def __init__(self,pairwise,k,default_rule = None,epsilon=None):
@@ -91,6 +97,11 @@ class topkalg:
 
 '''
 Adaptive ranking algorithm: The more general version
+Input:
+- pairwise: A class abstracting a pairwise comparison model (see pairwise.py). 
+The algorithm interacts with the model through asking for a comparison between 
+item i and j by calling pairwise.compare(i,j)
+- kset: bounderies of the sets to be found, as defined in the paper
 '''
 
 class ARalg:
@@ -117,7 +128,7 @@ class ARalg:
 
 		# active set contains pairs (index, score estimate)
 		active_set = [(i,0.0) for i in range(self.pairwise.n)]
-		kset = array(self.kset)	
+		kset = array(self.kset,dtype=int)	
 		t = 1 # algorithm time
 		while len(active_set) > 0:
 			#alpha = sqrt( 2*log( 1/delta) / t )
@@ -171,11 +182,11 @@ class ARalg:
 
 			# update k:
 			for ind, i in enumerate(toset):
-				kset[ind:] -= i
+				kset[ind:] -= int(i)
 
 			toremove.sort()	
 			for ind in reversed(toremove):
-				print(t, ': del:', ind, self.epsilon)
+				#print(t, ': del:', ind, self.epsilon)
 				del active_set[ind]
 			t += 1
 
@@ -198,8 +209,8 @@ class ARalg:
 
 	def evaluate_perfect_recovery(self):
 		origsets = [ set(range(0,self.kset[0])) ]
-		for i in range(1,len(kset)):
-			origsets.append( set(range(kset[i-1] , kset[i]  )))
+		for i in range(1,len(self.kset)):
+			origsets.append( set(range(self.kset[i-1] , self.kset[i]  )))
 		recsets = [set(s) for s in self.S]
 		return origsets == recsets
 	
@@ -341,7 +352,4 @@ class BTM():
 			scores = self.pairwise.scores()
 			print( "error, since:", scores[0], '>', scores[self.S[0]] )
 		return (self.S == [0])
-
-
-
 
